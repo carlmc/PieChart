@@ -40,7 +40,7 @@ public class GastoFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle SavedInstanceState) {
         view = inflater.inflate(R.layout.rv_gastos, container, false);
 
-        recyclerView = view.findViewById(R.id.recylcerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
 
         recyclerView.setHasFixedSize(true);

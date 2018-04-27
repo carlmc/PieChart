@@ -85,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void load_data_from_server() {
-        final int[] coloreando = new int[] {Color.rgb(255, 102, 102), Color.CYAN, Color.rgb(204, 204, 0), Color.BLUE, Color.rgb(250, 131, 13)};
+        final int[] coloreando = new int[] {Color.rgb(255, 102, 102),
+                Color.CYAN, Color.rgb(204, 204, 0),
+                Color.BLUE, Color.rgb(250, 131, 13)};
 
         //xVals = new ArrayList<String>();
         yVals = new ArrayList<PieEntry>();
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
                         PieDataSet dataSet = new PieDataSet(yVals, "");
                         dataSet.setSliceSpace(2f);
-                        //dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
                         dataSet.setColors(ColorTemplate.createColors(coloreando));
 
                         PieData data = new PieData(dataSet);
