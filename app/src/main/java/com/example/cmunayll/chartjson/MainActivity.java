@@ -1,10 +1,23 @@
 package com.example.cmunayll.chartjson;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +42,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,11 +50,24 @@ public class MainActivity extends AppCompatActivity {
     private TextView amount;
     private TextView date;
     private TextView transaction;
+    private Button mes;
+    private Button popup;
+
+    private RelativeLayout linear;
 
     ArrayList xVals, yVals;
     Float cantidad;
     float suma = 0;
     int total;
+
+    Dialog myDialog;
+
+    private Context context;
+    private Activity activity;
+    private PopupWindow popupWindow;
+
+    String[] months = new String[]{"Enero", "Febrero","Marzo", "Abril", "Mayo"};
+    Calendar cal = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +78,58 @@ public class MainActivity extends AppCompatActivity {
         amount = findViewById(R.id.amount);
         date = findViewById(R.id.date);
         transaction = findViewById(R.id.transaction);
+        mes = findViewById(R.id.btnMes);
+        popup = findViewById(R.id.btnPopup);
 
+        context = getApplicationContext();
+        activity = MainActivity.this;
+        linear = findViewById(R.id.linear);
+
+        popup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = getLayoutInflater(); //(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View custom = inflater.inflate(R.layout.popup_information, null);
+
+                /*popupWindow = new PopupWindow(custom, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+
+
+                ImageButton close = custom.findViewById(R.id.ib_close);
+
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                });
+
+                popupWindow.showAtLocation(linear, Gravity.CENTER, 0, 0);*/
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setView(custom)
+                .setNegativeButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+
+
+
+        mes.setText(months[cal.get(Calendar.MONTH)]+" "+cal.get(Calendar.YEAR));
+        mes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMonths(0);
+            }
+        });
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -82,12 +158,15 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date data = new Date();
         date.setText(simpleDateFormat.format(data));
+
+
+
     }
 
     public void load_data_from_server() {
-        final int[] coloreando = new int[] {Color.rgb(255, 102, 102),
-                Color.CYAN, Color.rgb(204, 204, 0),
-                Color.BLUE, Color.rgb(250, 131, 13)};
+        final int[] coloreando = new int[] {Color.rgb(102, 255, 102),
+                Color.CYAN, Color.rgb(255, 255, 102),
+                Color.RED, Color.rgb(102, 178, 255)};
 
         //xVals = new ArrayList<String>();
         yVals = new ArrayList<PieEntry>();
@@ -103,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 String amount = jsonObject.getString("amount").trim();
                                 String type = jsonObject.getString("type").trim();
+
 
                                 cantidad = Float.valueOf(amount);
 
@@ -142,5 +222,59 @@ public class MainActivity extends AppCompatActivity {
         );
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
     }
+
+    public Dialog showMonths(int id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        int check = 4;
+
+        builder.setTitle("Selecciona un mes")
+        .setPositiveButton("GUARDAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        })
+        /*.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(getApplicationContext(), "Cancel Clicked", Toast.LENGTH_SHORT).show();
+            }
+        })*/
+        .setSingleChoiceItems(months, check, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case 0:
+                        mes.setText(months[cal.get(Calendar.MONTH)-4]+" "+cal.get(Calendar.YEAR));
+                        break;
+                    case 1:
+                        mes.setText(months[cal.get(Calendar.MONTH)-3]+" "+cal.get(Calendar.YEAR));
+                        break;
+                    case 2:
+                        mes.setText(months[cal.get(Calendar.MONTH)-2]+" "+cal.get(Calendar.YEAR));
+                        break;
+                    case 3:
+                        mes.setText(months[cal.get(Calendar.MONTH)-1]+" "+cal.get(Calendar.YEAR));
+                        break;
+                    case 4:
+                        mes.setText(months[cal.get(Calendar.MONTH)]+" "+cal.get(Calendar.YEAR));
+                        break;
+                }
+            }
+        }).create();
+
+        /*builder.setItems(months, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });*/
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return null;
+    }
+
 
 }

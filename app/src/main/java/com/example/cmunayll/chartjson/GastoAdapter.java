@@ -1,7 +1,5 @@
 package com.example.cmunayll.chartjson;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.android.volley.toolbox.ImageLoader;
 
 import java.util.List;
 
@@ -62,7 +58,16 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.ViewHolder> 
             this.tvTipo.setText(gasto.getType());
             this.tvMonto.setText("S/ "+gasto.getAmount());
 
-
+            if (tvTipo.getText().equals("Pago de Servicios"))
+                this.ivColor.setImageResource(R.drawable.c102255102);
+            if (tvTipo.getText().equals("Comida"))
+                this.ivColor.setImageResource(R.drawable.cyan);
+            if (tvTipo.getText().equals("Supermercados"))
+                this.ivColor.setImageResource(R.drawable.c255255102);
+            if (tvTipo.getText().equals("Retiros"))
+                this.ivColor.setImageResource(R.drawable.red);
+            if (tvTipo.getText().equals("Otros"))
+                this.ivColor.setImageResource(R.drawable.c102178255);
         }
     }
 }

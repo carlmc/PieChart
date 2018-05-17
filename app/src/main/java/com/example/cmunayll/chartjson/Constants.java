@@ -6,5 +6,5 @@ package com.example.cmunayll.chartjson;
 
 public class Constants {
 
-    public static final String URL = "http://192.168.8.102/estadistica/gastos.php";
+    public static final String URL = "http://192.168.8.101/estadistica/gastos.php";
 }

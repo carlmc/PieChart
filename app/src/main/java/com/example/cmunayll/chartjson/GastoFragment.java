@@ -26,18 +26,18 @@ import java.util.List;
 
 public class GastoFragment extends Fragment {
 
-    private View view;
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private List<Gasto> gastos;
     private GastoAdapter adapter;
 
     public GastoFragment() {
-
+        //construct
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle SavedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view;
+        RecyclerView.LayoutManager layoutManager;
         view = inflater.inflate(R.layout.rv_gastos, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -63,7 +63,7 @@ public class GastoFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        //error response
                     }
                 });
         requestQueue.add(stringRequest);
